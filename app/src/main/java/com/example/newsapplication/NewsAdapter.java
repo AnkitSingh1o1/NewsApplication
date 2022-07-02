@@ -1,4 +1,5 @@
 package com.example.newsapplication;
+
 import android.app.Activity;
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -15,17 +16,18 @@ import com.bumptech.glide.Glide;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.List;
 
 public class NewsAdapter extends ArrayAdapter<ANews> {
-    public NewsAdapter(Context context, List<ANews> resource) {
-        super(context, 0, resource);
+    public NewsAdapter(Context context, List<ANews> news) {
+
+        super(context, 0, news);
     }
 
     @NonNull
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
+
         LayoutInflater inflater = (LayoutInflater)  getContext().getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
 
         if(convertView == null){
@@ -34,7 +36,7 @@ public class NewsAdapter extends ArrayAdapter<ANews> {
 
         ANews currNews = getItem(position);
 
-        ImageView newsThumbnail = (ImageView) convertView.findViewById(R.id.imageView);
+        ImageView newsThumbnail = convertView.findViewById(R.id.imageView);
         try{
             URL imageURL = new URL(currNews.getThumbnail());
             Glide.with(getContext()).load(imageURL).into(newsThumbnail);}
@@ -42,14 +44,14 @@ public class NewsAdapter extends ArrayAdapter<ANews> {
             e.printStackTrace();
         }
 
-        TextView heading = (TextView) convertView.findViewById(R.id.heading);
+        TextView heading = convertView.findViewById(R.id.heading);
         heading.setText(currNews.getHeading());
 
-        TextView time = (TextView) convertView.findViewById(R.id.time);
-        heading.setText(currNews.getTime());
+        TextView time = convertView.findViewById(R.id.time);
+        time.setText(currNews.getTime());
 
-//        TextView source = (TextView) convertView.findViewById(R.id.source);
-//        heading.setText(currNews.getSource());
+        TextView source = convertView.findViewById(R.id.source);
+        source.setText(currNews.getSource());
 
         return convertView;
 

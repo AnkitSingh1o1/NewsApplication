@@ -2,8 +2,8 @@ package com.example.newsapplication;
 
 public class ANews {
     //variables
-    private String nHeading;
-    private String nTime;
+    private final String nHeading;
+    private final String nTime;
     private String nSource;
     public String nThumbnail;
 

@@ -10,26 +10,26 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
 
 public class MainListFragment extends Fragment implements LoaderCallbacks<List<ANews>>{
 
     View view;
-    public static String NEWS_REQUEST_URL = "https://newsapi.org/v2/everything?q=";
-    public static String API_KEY = "&apiKey=07165b2691ce47ff978ce1b24300631f";
+    public static String NEWS_REQUEST_URL = "https://newsdata.io/api/1/news?apikey=pub_8878c9987dd3030c114e741584c08bda7c95&q=";
+    String value = "cryptocurrency";
     private NewsAdapter nAdapter;
     private TextView nEmptyStateTextView;
     private static final int NEWS_LOADER_ID = 1;
 
+    private ListView newsList;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -37,12 +37,12 @@ public class MainListFragment extends Fragment implements LoaderCallbacks<List<A
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_main_list, container, false);
 
-        ListView newsList = (ListView) view.findViewById(R.id.keywordlistview);
+        newsList = (ListView) view.findViewById(R.id.keywordlistview);
         nEmptyStateTextView = (TextView) view.findViewById(R.id.empty_view);
         newsList.setEmptyView(nEmptyStateTextView);
 
         // Create a new adapter that takes an empty list of earthquakes as input
-        nAdapter = new NewsAdapter(getActivity(), new ArrayList<ANews>());
+        nAdapter = new NewsAdapter(getActivity(), new ArrayList<>());
 
         // Set the adapter on the {@link ListView}
         // so the list can be populated in the user interface
@@ -58,7 +58,7 @@ public class MainListFragment extends Fragment implements LoaderCallbacks<List<A
         // If there is a network connection, fetch data
         if (networkInfo != null && networkInfo.isConnected()) {
             // Get a reference to the LoaderManager, in order to interact with loaders.
-            LoaderManager loaderManager = requireActivity().getLoaderManager();
+            LoaderManager loaderManager = getActivity().getLoaderManager();
 
             // Initialize the loader. Pass in the int ID constant defined above and pass in null for
             // the bundle. Pass in this activity for the LoaderCallbacks parameter (which is valid
@@ -73,7 +73,6 @@ public class MainListFragment extends Fragment implements LoaderCallbacks<List<A
             // Update empty state with no connection error message
             nEmptyStateTextView.setText(R.string.no_internet_connection);
         }
-        // Inflate the layout for this fragment
         return view;
 
     }
@@ -82,7 +81,7 @@ public class MainListFragment extends Fragment implements LoaderCallbacks<List<A
     @Override
     public Loader<List<ANews>> onCreateLoader(int i, Bundle bundle) {
         // Create a new loader for the given URL
-        return new NewsLoader(getActivity(), NEWS_REQUEST_URL + "trending" + API_KEY);
+        return new NewsLoader(getContext(), NEWS_REQUEST_URL+value);
     }
 
     @Override
@@ -95,12 +94,12 @@ public class MainListFragment extends Fragment implements LoaderCallbacks<List<A
         nEmptyStateTextView.setText(R.string.no_news);
 
         // Clear the adapter of previous earthquake data
-        nAdapter.clear();
+        //nAdapter.clear();
 
         // If there is a valid list of {@link Earthquake}s, then add them to the adapter's
         // data set. This will trigger the ListView to update.
         if (aNews != null && !aNews.isEmpty()) {
-            //mAdapter.addAll(earthquakes);
+           // mAdapter.addAll(earthquakes);
             updateUi(aNews);
         }
     }
